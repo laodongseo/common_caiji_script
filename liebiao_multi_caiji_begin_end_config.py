@@ -3,6 +3,7 @@
 配置文件以制表符分割
 url,max_num,small_type,max_type = line
 small_type是小分类,max_type是大分类,方面命名文件用的
+http://www.loupan.com/ask/72-p{0}/  2   工业用房    房屋类型
 """
 
 #‐*‐coding:utf‐8‐*‐
@@ -83,10 +84,10 @@ if __name__ == "__main__":
         line = line.strip().split('\t')
         url,max_num,small_type,max_type = line
         # 结果保存文件
-        f = open('{0}_{1}.txt'.format(max_type,small_type), 'a+', encoding='utf-8')
+        f = open('{0}_{1}.txt'.format(max_type,small_type), 'w+', encoding='utf-8')
         # url队列
         q = queue.Queue()
-        for i in range(1,int(max_num) + 2):
+        for i in range(1,int(max_num) + 1):
             my_url = url.format(i) if max_num != 0 else url
             q.put(my_url)
 
