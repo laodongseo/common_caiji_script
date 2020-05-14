@@ -1,5 +1,5 @@
 """
-多类列表,指定起始翻页采集,保存为不同文件
+多类列表,指定起始结尾翻页采集,保存为不同文件
 配置文件以制表符分割
 url,max_num,small_type,max_type = line
 small_type是小分类,max_type是大分类,方面命名文件用的
