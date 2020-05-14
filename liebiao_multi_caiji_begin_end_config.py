@@ -35,7 +35,7 @@ def parse(html):
     title_links = []
     doc = pq(html)
     title = doc('title').text()
-    if '房' in title:
+    if '楼盘网' in title:
         p_list = doc('.lit_wrap a .zx_t').items()
         for p in p_list:
             title = p.text()
