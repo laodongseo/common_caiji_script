@@ -2,7 +2,7 @@
 多类列表,指定起始结尾翻页采集,保存为不同文件
 配置文件以制表符分割
 url,max_num,small_type,max_type = line
-small_type是小分类,max_type是大分类,方面命名文件用的
+small_type是小分类,max_type是大分类,方便命名文件用的
 http://www.loupan.com/ask/72-p{0}/  2   工业用房    房屋类型
 """
 
