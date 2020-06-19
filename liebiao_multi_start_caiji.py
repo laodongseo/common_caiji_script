@@ -41,16 +41,15 @@ def get_wenda(html,url):
             next_page = page_next.attr('href')
             print(next_page)
             q.put(next_page)
-            list_a = doc('.content_box .right ul li a').items()
+        else:
+            print('无下一页')
+        list_a = doc('.content_box .right ul li a').items()
             for a in list_a:
                 text = a('.question').text()
                 link = a.attr('href')
                 print(text,link)
                 f.write('{0}\t{1}\n'.format(text,link))
             f.flush()
-
-        else:
-            print('无下一页')
     else:
         print('可能被ban....')
         return ['xxx','xxx']
