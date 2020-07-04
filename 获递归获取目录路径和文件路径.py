@@ -28,4 +28,9 @@ def file_name(file_dir):
 txt_file_name=file_name(".")
 
 
+if not os.path.isdir(path):  # 无文件夹时创建
+#             os.makedirs(path)
+#         if not os.path.isfile(filename):  # 无文件时创建
+#             fd = open(filename, mode="w", encoding="utf-8")
+
 
