@@ -17,14 +17,15 @@ def get_file_path(root_path, file_list, dir_list):
         else:
             file_list.append(dir_file_path)
 
+            
+     
+def file_name(file_dir):
+    File_Name=[]
+    for files in os.listdir(file_dir):
+        if os.path.splitext(files)[1] == '.txt':
+            File_Name.append(files)
+    return File_Name
+txt_file_name=file_name(".")
 
-if __name__ == "__main__":
-    # 根目录路径
-    root_path = r"C:\Users\Administrator\Desktop\2020排名"
-    # 用来存放所有的文件路径
-    file_list = []
-    # 用来存放所有的目录路径
-    dir_list = []
-    get_file_path(root_path, file_list, dir_list)
-    print(file_list)
-    print(dir_list)
+
+
