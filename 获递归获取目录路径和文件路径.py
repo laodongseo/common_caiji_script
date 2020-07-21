@@ -18,7 +18,7 @@ def get_file_path(root_path, file_list, dir_list):
             file_list.append(dir_file_path)
 
             
- # 每个filename 不含路径    
+ # 结果里每个filename 是不含路径的    
 def file_name(file_dir):
     File_Name=[]
     for files in os.listdir(file_dir):
