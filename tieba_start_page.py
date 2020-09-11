@@ -21,7 +21,7 @@ class Tieba(object):
             print('获取源码失败', url, e)
             if retry > 0:
                 time.sleep(30)
-                get_data(url, retry - 1)
+                self.get_data(url, retry - 1)
         else:
             status = r.status_code
             if status == 200:
