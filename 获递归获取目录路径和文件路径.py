@@ -28,6 +28,22 @@ def file_name(file_dir):
 txt_file_name=file_name(".")
 
 
+
+# 获取文件(含路径)
+def get_logfiles(log_path,ext):
+    file_list = []
+    dir_or_files = os.listdir(log_path)
+    for dir_file in dir_or_files:
+        # 获取目录或者文件的路径
+        dir_file_path = os.path.join(log_path, dir_file)
+        # 判断该路径为文件还是路径
+        if os.path.isdir(dir_file_path):
+            pass
+        else:
+        	if os.path.splitext(dir_file_path)[-1] == ext:
+        		file_list.append(dir_file_path)
+    return file_list
+
 if not os.path.isdir(path):  # 无文件夹时创建
 #             os.makedirs(path)
 #         if not os.path.isfile(filename):  # 无文件时创建
