@@ -44,7 +44,19 @@ def file_name(file_dir):
 txt_file_name=file_name(".")
 
 
-
+# 清空文件夹
+def clear_path(filepath):
+    if os.path.exists(filepath):
+        for i in os.listdir(filepath):
+            path_file = os.path.join(filepath, i)
+            if os.path.isfile(path_file):
+                os.remove(path_file)
+            elif os.path.isdir(path_file):
+                shutil.rmtree(path_file)
+            else:
+                pass
+            
+            
 if not os.path.isdir(path):  # 无文件夹时创建
 #             os.makedirs(path)
 #         if not os.path.isfile(filename):  # 无文件时创建
