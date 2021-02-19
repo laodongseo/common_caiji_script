@@ -15,6 +15,5 @@ fname,fename=os.path.splitext('/home/ubuntu/python_code/split_func/split_functio
 #os.path.split（）返回文件的路径和文件名
 dirname,filename=os.path.split('/home/ubuntu/python_code/split_func/split_function.py')# /home/ubuntu/python_code/split_func     split_function.py
 
-
 shutil库
 shutil.move(src, dst)：把文件移动到指定位置
