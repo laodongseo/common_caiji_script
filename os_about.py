@@ -8,15 +8,15 @@ os.path.isdir(path)：判断目标是否是目录
 os.path.isfile(path)：判断目标是目录还是文件
 os.walk(path)：遍历指定目录下的所有子文件夹和子文件夹中的所有文件
 os.listdir()：返回指定路径下所有的文件和文件夹列表,但是子目录下文件不遍历
-os.path.basename(file)： 返回文件名(不带路径 带后缀)
+
 
 os.path.join()：将分离的部分合成一个整体
 filename=os.path.join('/home/ubuntu/python_code','split_func') ：输出为：/home/ubuntu/python_code/split_func
 
-os.path.splitext()：将文件名和扩展名分开，不会去除路径
+os.path.basename(file)  返回文件名(去除路径 包含后缀)
+os.path.splitext() 分割文件的路径(带有文件名) 和扩展名
 fname,fename=os.path.splitext('/home/ubuntu/python_code/split_func/split_function.py')#输出为：/home/ubuntu/python_code/split_func/split_function   .py
- 
-#os.path.split（）返回文件的路径和文件名
+os.path.split（）分割文件的路径 和文件名(带后缀)
 dirname,filename=os.path.split('/home/ubuntu/python_code/split_func/split_function.py')# /home/ubuntu/python_code/split_func     split_function.py
 
 # shutil库
