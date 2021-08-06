@@ -1,0 +1,63 @@
+lis = open('f1.txt','r',encoding='utf-8').readlines()
+s = ''.join(lis)
+s = re.sub('\s+','',s)
+s = s.replace('{','{"').replace(',','","').replace(':','":"').replace('}','"}').replace('"[','[').replace(']"',']').replace('"}","{"','"},{"')
+print(s)
+with open('ff.txt','w',encoding='utf-8') as f:
+	f.write(s)
+    
+    
+    
+    
+    
+    
+   {
+ expressOrderNo: 调试专用快递号012,
+ sendPhone: 18812341234,
+ note: 这是备注18812341234,
+ materialList: [{
+  companyName: 上海织财智能技术有限公司,
+  companyId: 483660841896382464,
+  otherMaterial: 22222,
+  materialType: 4,
+  materialCount: 44,
+  materialStatus: 2,
+  recordId: 483660850012360704,
+  note: 22222
+ }, {
+  companyName: 上海织财智能技术有限公司,
+  companyId: 483660841896382464,
+  otherMaterial: 22222,
+  materialType: 4,
+  materialCount: 44,
+  materialStatus: 2,
+  recordId: 483660850012360704,
+  note: 22222
+ }, {
+  companyName: 吉祥88888,
+  salesManId: ,
+  vfsApplyId: 3,
+  name: 2222,
+  otherMaterial: 11111,
+  materialType: 3,
+  materialCount: 12,
+  materialStatus: 1,
+  recordId: 414769739903012864,
+  note: 11111
+ }, {
+  companyName: 吉祥88888,
+  salesManId: ,
+  vfsApplyId: 3,
+  name: 2222,
+  otherMaterial: 11111,
+  materialType: 3,
+  materialCount: 12,
+  materialStatus: 1,
+  recordId: 414769739903012864,
+  note: 11111
+ }, {
+  materialType: 99,
+  materialStatus: 3,
+  note: 备注备注备注备注备注备注123
+ }]
+}
