@@ -58,3 +58,4 @@ s = "Jason's birthday is on 1991-09-21 1991-9-21"
 match = re.search(r'\d{4}-\d{1,2}-\d{1,2}', s)
 date = datetime.datetime.strptime(match.group(), '%Y-%m-%d').date()
 print(date)
+https://blog.softhints.com/python-regex-match-date/
