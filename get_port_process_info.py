@@ -32,7 +32,20 @@ def get_port(p_name):
   else:
     print('端口获取异常')
 
-if __name__ == "__main__":
-    p_name = 'chromedriver.exe'
-    my_port = get_port(p_name)
-    print(my_port)
+# 获取目标python脚本产生的python进程id
+def get_process_id(py_script_name):
+    ids = []
+    result = os.popen('wmic process where name="python.exe" get processid,commandline')
+    res = result.read()
+    res = res.strip().splitlines()
+    for line in res:
+        print(line)
+        if py_script_name in line:
+            lis = line.split(' ')
+            for element in lis:
+                element = element.strip()
+                re_ret = re.search('^\d+$',element)
+                if re_ret:
+                    id = re_ret.group()
+                    ids.append(id)
+    return ids
