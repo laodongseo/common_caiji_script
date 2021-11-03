@@ -1,4 +1,9 @@
 # -*- encoding=utf8 -*-
+"""
+netstat  -aon|findstr  端口号
+tasklist|findstr 端口号
+https://jingyan.baidu.com/article/72ee561ab81a2ae16138dfcc.html
+"""
 import psutil
 import re
 import os
