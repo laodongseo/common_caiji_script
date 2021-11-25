@@ -17,10 +17,10 @@ class ProxyPool():
         return []
 
 
-    def _update_proxy(self,proxy_list)
+    def _update_proxy(self,proxy_list):
         """对比现有ip池和新请求的ip,更新ip池"""
         invalid_proxy_list = set(self.alive_proxy_list) - set(proxy_list)
-        add_proxy_list = set(proxy_list) - set(alive_proxy_list)
+        add_proxy_list = list(set(proxy_list) - set(alive_proxy_list))
         self.alive_proxy_list.remove(invalid_proxy_list)
         self.alive_proxy_list.extend(add_proxy_list)
         if len(self.alive_proxy_list) > 50:
