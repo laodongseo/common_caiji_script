@@ -21,11 +21,11 @@ class ProxyPool():
     def _fetch_proxy_set(self, count):
         """调用接口获取代理ip列表"""
         try:
-            res = requests.get("http://dps.kdlapi.com/api/getdps/?orderid=%s&num=%s&pt=1&sep=1&f_et=1&format=json" % (self.orderid, count))
-            return [proxy.split(',') for proxy in res.json().get('data').get('proxy_set')]
+            res = requests.get("http://dps.xxxxx.com/api/getdps/?orderid=%s&num=%s&pt=1&sep=1&f_et=1&format=json" % (self.orderid, count))
+            return set([proxy.split(',') for proxy in res.json().get('data').get('proxy_set')])
         except:
             print("API获取ip异常，请检查订单")
-        return []
+        return set()
 
 
     def _update_proxy(self,proxy_set):
