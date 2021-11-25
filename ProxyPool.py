@@ -1,3 +1,14 @@
+# -*- encoding: utf-8 -*-
+"""
+请求代理ip接口,维护代理ip池
+"""
+
+import time
+import random
+import threading
+import requests
+
+
 class ProxyPool():
 
     def __init__(self, orderid, proxy_count,sleep_seconds=40):
@@ -44,3 +55,13 @@ class ProxyPool():
         t = threading.Thread(target=self.run)
         t.setDaemon(True)  # 设为守护进程，
         t.start()
+
+
+if __name__ == '__main__':
+    proxy_pool = ProxyPool('9266892014xxxxx',30,40) # 订单号, 池子中维护的ip数,接口请求间隔
+    proxy_pool.start()
+    time.sleep(1)  # 等待ip池初始化
+
+    proxy = proxy_pool.get_proxy() # 从ip池中提取ip
+    if proxy:
+        get_html(proxy)
