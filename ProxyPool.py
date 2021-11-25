@@ -1,8 +1,3 @@
-# -*- encoding: utf-8 -*-
-"""
-请求代理ip接口,维护代理ip池
-"""
-
 import time
 import random
 import threading
@@ -21,7 +16,7 @@ class ProxyPool():
     def _fetch_proxy_set(self, count):
         """调用接口获取代理ip列表"""
         try:
-            res = requests.get("http://dps.xxxxx.com/api/getdps/?orderid=%s&num=%s&pt=1&sep=1&f_et=1&format=json" % (self.orderid, count))
+            res = requests.get("http://dps.kdlapi.com/api/getdps/?orderid=%s&num=%s&pt=1&sep=1&f_et=1&format=json" % (self.orderid, count))
             return set([proxy.split(',') for proxy in res.json().get('data').get('proxy_set')])
         except:
             print("API获取ip异常，请检查订单")
@@ -31,8 +26,8 @@ class ProxyPool():
     def _update_proxy(self,proxy_set):
         """对比现有ip池和新请求的ip,更新ip池"""
         invalid_proxy_set = self.alive_proxy_set - proxy_set
-        add_proxy_set = proxy_set - alive_proxy_set
         self.alive_proxy_set = self.alive_proxy_set - invalid_proxy_set
+        add_proxy_set = proxy_set - alive_proxy_set
         self.alive_proxy_set.update(add_proxy_set)
         if len(self.alive_proxy_set) > 50:
                 self.alive_proxy_set = set(list(self.alive_proxy_set)[0:50])
@@ -45,6 +40,7 @@ class ProxyPool():
 
     def run(self):
         while True:
+            time.sleep(self.sleep_seconds)
             proxy_set = self._fetch_proxy_set(self.proxy_count)
             self._update_proxy(proxy_set)
             time.sleep(self.sleep_seconds)
