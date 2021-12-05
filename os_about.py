@@ -14,10 +14,14 @@ os.path.join()：将分离的部分合成一个整体
 filename=os.path.join('/home/ubuntu/python_code','split_func') ：输出为：/home/ubuntu/python_code/split_func
 
 os.path.basename(file)  返回文件名(去除路径 包含后缀)
+
 os.path.splitext() 分割文件的路径(带有文件名) 和扩展名
-fname,fename=os.path.splitext('/home/ubuntu/python_code/split_func/split_function.py')#输出为：/home/ubuntu/python_code/split_func/split_function   .py
+fname,fename=os.path.splitext('/home/ubuntu/python_code/split_func/split_function.py')
+#输出为：/home/ubuntu/python_code/split_func/split_function   .py
+
 os.path.split（）分割文件的路径 和文件名(带后缀)
-dirname,filename=os.path.split('/home/ubuntu/python_code/split_func/split_function.py')# /home/ubuntu/python_code/split_func     split_function.py
+dirname,filename=os.path.split('/home/ubuntu/python_code/split_func/split_function.py')
+# /home/ubuntu/python_code/split_func     split_function.py
 
 # shutil库
 shutil.move(src, dst)：把文件移动到指定位置
