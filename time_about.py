@@ -13,7 +13,7 @@ def get_last_unix():
     return last_day_unix
 
 
-# 获取一个时间段时间戳
+# 获取某几天的时间戳
 def get_time_unix(num):
     unix_times = []
     today = datetime.date.today()
