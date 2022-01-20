@@ -66,3 +66,19 @@ dsize = (src.shape[1], new_height)
 # resize image
 output = cv2.resize(src, dsize, interpolation = cv2.INTER_AREA)
 cv2.imwrite('D:/cv2-resize-image-height.png',output) 
+
+
+# 缩放图片
+def reduce_img(img_path,need_width=400,savePath='./'):
+	filesize = len(open(img_path,'rb').read())/1024
+	print(filesize)
+	image = cv2.imread(img_path)
+	w,h,deep = image.shape
+	print(w,h)
+	if w > need_width:
+		value = rate = math.ceil((need_width / w) * 10) / 10
+		resize_img = cv2.resize(image, (0, 0), fx=value, fy=value, interpolation=cv2.INTER_NEAREST)
+		basename = os.path.splitext(os.path.split(img_path)[1])[0]
+		cv2.imwrite(f'{savePath}{basename}_new.jpg', resize_img)
+
+reduce_img('./zhizhao.jpg')
