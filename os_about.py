@@ -1,6 +1,10 @@
 # ‐*‐coding:utf‐8‐*‐
 import os
 
+# 获取纯文件名|不含后缀
+basename = os.path.basename(excel_file)
+fname = os.path.splitext(basename)[0]
+
 
 os.path.abspath(path)：获取目标位置的绝对路径
 os.path.exists(path)：判断目标是否存在
@@ -14,7 +18,6 @@ os.path.join()：将分离的部分合成一个整体
 filename=os.path.join('/home/ubuntu/python_code','split_func') ：输出为：/home/ubuntu/python_code/split_func
 
 os.path.basename(file)  返回文件名(去除路径 包含后缀)
-
 os.path.splitext() 分割文件的路径(带有文件名) 和扩展名
 fname,fename=os.path.splitext('/home/ubuntu/python_code/split_func/split_function.py')
 #输出为：/home/ubuntu/python_code/split_func/split_function   .py
