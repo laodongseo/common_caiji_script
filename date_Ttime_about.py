@@ -30,3 +30,7 @@ print('---------------------------------')
 today_obj = datetime.now() # datetime对象
 str_date = today_obj.strftime("%Y-%m-%d %H:%M:%S")
 print(str_date)
+
+
+local_time = time.localtime()
+today = time.strftime('%Y-%m-%d_%H-%M-%S', local_time)
