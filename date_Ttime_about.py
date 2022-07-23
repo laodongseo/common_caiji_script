@@ -31,6 +31,17 @@ today_obj = datetime.now() # datetime对象
 str_date = today_obj.strftime("%Y-%m-%d %H:%M:%S")
 print(str_date)
 
+# 获取日期和时间
+import datetime
 
+date_obj = datetime.date.today() # <class 'datetime.date'>
+str_date = date_obj.strftime('%Y-%m-%d') # str
+print(str_date,type(str_date))
+
+time_obj = datetime.datetime.now() # <class 'datetime.datetime'>
+str_dtime = time_obj.strftime('%Y-%m-%d %H:%M:%S') # str
+print(str_dtime,type(str_dtime))
+
+import time
 local_time = time.localtime()
-today = time.strftime('%Y-%m-%d_%H-%M-%S', local_time)
+today = time.strftime('%Y-%m-%d_%H-%M-%S', local_time) # str
