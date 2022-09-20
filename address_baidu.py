@@ -1,6 +1,10 @@
 #‐*‐coding:utf‐8‐*‐
 """
 某个地址名获取经纬度信息
+lat<纬度>,lng<经度>
+地点检索周边：
+https://lbsyun.baidu.com/index.php?title=webapi/guide/webservice-placeapi
+https://lbsyun.baidu.com/index.php?title=jspopular3.0
 """
 import requests
 import threading
