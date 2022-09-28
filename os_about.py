@@ -14,6 +14,25 @@ os.walk(path)：遍历指定目录下的所有子文件夹和子文件夹中的�
 os.listdir()：返回指定路径下所有的文件和文件夹列表,但是子目录下文件不遍历
 
 
+path1 = os.path.dirname(__file__)  
+print(path1)#获取当前运行脚本的绝对路径  
+
+path2 = os.path.dirname(os.path.dirname(__file__)) #  
+print(path2)#获取当前运行脚本的绝对路径（去掉最后一个路径）  
+
+path3 = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))  
+print(path3)#获取当前运行脚本的绝对路径（去掉最后2个路径）  
+
+path4 = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))  
+print(path4)#获取当前运行脚本的绝对路径（去掉最后3个路径）  
+
+path5 = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(__file__)))))  
+print(path5)#获取当前运行脚本的绝对路径（去掉最后4个路径）  
+
+path6 = os.__file__                  #获取os所在的目录  
+print(path6)
+
+
 os.path.join()：将分离的部分合成一个整体
 filename=os.path.join('/home/ubuntu/python_code','split_func') ：输出为：/home/ubuntu/python_code/split_func
 
