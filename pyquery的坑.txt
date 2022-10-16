@@ -1,0 +1,13 @@
+html = '''
+<ul>
+     <li class="item-0">11</li>
+     <li class="item-0">22</li>
+ </ul>
+'''
+
+doc = pq(html)
+res = doc('.item-0').html()
+res2 = doc('.item-0').text()
+print(res,type(res))
+print(res2,type(res2))
+------------------------------------
