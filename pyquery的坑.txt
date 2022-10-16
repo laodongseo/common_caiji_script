@@ -11,3 +11,12 @@ res2 = doc('.item-0').text()
 print(res,type(res))
 print(res2,type(res2))
 ------------------------------------
+html = '''
+<ul>
+     <li class="item-0">11</li>
+ </ul>
+'''
+
+doc = pq(html)
+res = doc.find('ul').html() # 只有外层1个ul，返回None
+print(res,type(res))
