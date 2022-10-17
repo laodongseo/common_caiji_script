@@ -1,0 +1,54 @@
+pyquery：
+
+html = '''
+<ul>
+     <li class="item-0">11</li>
+     <li class="item-0">22</li>
+ </ul>
+'''
+
+doc = pq(html)
+res = doc('.item-0').html()
+res2 = doc('.item-0').text()
+print(res,type(res))
+print(res2,type(res2))
+----------------------------------------------------------
+html = '''
+<ul>
+     <li class="item-0">11</li>
+ </ul>
+'''
+
+doc = pq(html)
+res = doc.find('ul') # find是查找内层，如果只有外层1个ul，则获取不到
+print(res,type(res))
+
+doc = pq(html)
+res = doc.filter('ul') # filter包含最外层标签，如果只有外层1个ul，也能获取
+print(res,type(res))
+------------------------------------------------------------
+font标签自己或者和其他标签同时出现，文本输出默认加换行，但是如果只有单个font标签则不会加换行
+html = '''
+<a>111</a><span>222</span>
+'''
+html2 = '''
+<a>111</a><font>222</font>
+'''
+html3 = '''
+<font>111</font>
+'''
+
+doc = pq(html)
+print(doc.text())
+
+doc = pq(html2)
+print(doc.text())
+
+doc = pq(html3)
+print(doc.text())
+
+////////////////////////////////////////////////////////////////
+有多个p标签，具体几层无法确定，如何提取包含文本的p标签
+xpath：
+//p[normalize-space()]  
+//p[string()]
