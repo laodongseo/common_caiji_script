@@ -46,7 +46,7 @@ class Spider_Content(threading.Thread):
 		doc= pq(str(html))
 		div_obj = doc('div.content')
 		img_objs = div_obj('img').items()
-		imgs_list = [img.attr('src') for img in img_objs]
+		imgs_list = [img.attr('src') for img in img_objs if img.attr('src)]
 		imgs = '#'.join(imgs_list)
 
 		div_html = div_obj.html()
