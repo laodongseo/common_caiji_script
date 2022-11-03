@@ -41,15 +41,21 @@ class Spider_Content(threading.Thread):
 			html = data.decode(code,errors='ignore')
 			return html
 
+	# 解析源码
 	def parse(self, html):
 		doc= pq(str(html))
-		p_list = doc('.info-zi p').items()
-		texts = []
-		for p in p_list:
-			text = p.text().strip()
-			texts.append(text) if text else True
-		article = ''.join([f'<p>　　{text}</p>' for text in texts])
-		return article
+		div_obj = doc('div.content')
+		img_objs = div_obj('img').items()
+		imgs_list = [img.attr('src') for img in img_objs]
+		imgs = '#'.join(imgs_list)
+
+		div_html = div_obj.html()
+		div_html = re.sub('\n|&#13;','',div_html)
+		div_html = re.sub(r'<p>	<br /></p>|<p>	<br/></p>|<p>	<br></p>|<p>	<br ></p>','',div_html)
+		no_str = '<!--<div class="arcbodyad"><a href="http://www.xiuzhanwang.com/" ><img src="/style/arcad.jpg" /></a></div>-->'
+		div_html = re.sub(no_str,'',div_html)
+		article = re.sub('<p>','<p>　　',div_html).strip()
+		return article,imgs
 
 
 	def run(self):
@@ -60,12 +66,19 @@ class Spider_Content(threading.Thread):
 			print(url)
 			try:
 				html = self.get_html(url)
-				article = self.parse(html)
+				if not html:
+					q.put(url)
+					continue
+				article_imgs = self.parse(html)
 			except Exception as e:
 				traceback.print_exc()
+				q.put(row)
+				time.sleep(30)
 			else:
-				if isinstance(article,str) and len(article) > 0:
+				if isinstance(article_imgs,tuple) and len(article_imgs[0]) > 0:
+					article,imgs = article_imgs
 					row['article'] = article
+					row['图片'] = imgs
 					df = row.to_frame().T
 					with lock:
 						if IsHeader == 0:
@@ -76,13 +89,13 @@ class Spider_Content(threading.Thread):
 			finally:
 				q.task_done()
 				gc.collect()
-				time.sleep(2)
+				time.sleep(1.5)
 
 
 if __name__ == "__main__":
 	start = time.time()
 	user_agent = {'User-Agent': 'Sogou web spider/4.0(+http://www.sogou.com/docs/help/webmasters.htm#07)'}
-	q = Spider_Content.read('txt合并.xlsx')
+	q = Spider_Content.read('www.pc-daily.com_百度PC.xlsx')
 	TodayCsvFile = f'res_new.csv'
 	lock = threading.Lock()
 	IsHeader = 0
@@ -96,4 +109,3 @@ if __name__ == "__main__":
 
 	end = time.time()
 	print((end - start))
-
