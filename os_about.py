@@ -1,6 +1,9 @@
 # ‐*‐coding:utf‐8‐*‐
 import os
 
+
+dir *.*/b>目录清单.txt
+
 # 获取纯文件名|不含后缀
 basename = os.path.basename(excel_file)
 fname = os.path.splitext(basename)[0]
