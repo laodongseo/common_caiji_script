@@ -1,21 +1,17 @@
-# ‐*‐ coding: utf‐8 ‐*‐
+# --*--coding: utf-8 --*--
+"""
+指定起始页url
+单线程翻页采集直到结束
+"""
+import pandas as pd
+import traceback
+from pyquery import PyQuery as pq
+import time
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.chrome.options import Options
-from selenium.common.exceptions import TimeoutException
-from selenium.common.exceptions import NoSuchElementException
-from selenium.webdriver.chrome.options import Options
-import time
-import traceback
-import re
-import os
-from pyquery import PyQuery as pq
-import threading
-
-s1 = r""" "C:\Program Files (x86)\Google\Chrome\Application\chrome.exe" --remote-debugging-port=9222 --user-data-dir="C:\selenum\AutomationProfile" """
-
 
 
 def set_driver(driver):
@@ -38,7 +34,6 @@ def set_driver(driver):
 		return driver
 
 
-
 def close_handle(driver):
 	if len(driver.window_handles) > 1:
 		for handle in driver.window_handles[0:-1]:
@@ -53,8 +48,8 @@ def close_handle(driver):
 		driver.switch_to.window(driver.window_handles[0])
 
 
-def get_driver(chrome_path,chromedriver_path,ua):
-	ua = ua
+def get_driver(chrome_path,chromedriver_path):
+	ua = 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.135 Safari/537.36'
 	option = Options()
 	option.binary_location = chrome_path
 	# option.add_argument('disable-infobars')
@@ -80,105 +75,127 @@ def get_driver(chrome_path,chromedriver_path,ua):
 	return driver
 
 
-def read_excel(filepath):
-		q = queue.Queue()
-		df = pd.read_excel(filepath).dropna()
-		for index,row in df.iterrows():
-			q.put(row)
-		return q
-
-
-def parse_html(html,now_url):
-	next_page = ''
-	rows_all = []
-	doc= pq(str(html))
-	title = doc('title').text()
-	if '口红' in title:
-		tr_lefts = doc('div.items div.J_MouserOnverReq div.pic a').items() 
-		next_page_obj = doc('li.next a.J_Ajax')
-		next_page = next_page_obj.text()
-		for td_obj in tr_lefts:
-			text = td_obj('img').attr('alt')
-			link = td_obj.attr('href')
-			link = f'https://{link}'
-			rows_all.append((text,link))
-	return rows_all,next_page
-
-
-
-def save(datas,url_str):
-	df = row.to_frame().T
-	with lock:
-		if IsHeader == 0:
-			df.to_csv(CsvResFile,encoding='utf-8-sig',mode='w+',index=False)
-			IsHeader = 1
-		else:
-			df.to_csv(CsvResFile,encoding='utf-8-sig',mode='a+',index=False,header=False)
-	f.flush()
-
-
-def main():
-	page_num = 1
-	global driver,OneHandle_UseNum
-	driver.get(IndexUrl)
-	content_left = WebDriverWait(driver, 20).until(
-			EC.visibility_of_element_located((By.CLASS_NAME, "total"))
+def login_cms(user,pwd):
+	url = 'https://cms.5i5j.com/'
+	driver.get(url)
+	ele_user = WebDriverWait(driver, 20).until(
+		EC.presence_of_element_located((By.ID, "username"))
 	)
-	html, now_url = driver.page_source, driver.current_url
-	rows_all,next_page = parse_html(html,now_url)
-	print('首页处理完毕:',next_page)
-	save(rows_all,now_url)
+	ele_user.clear()
+	ele_user.click()
+	for i in user:
+		ele_user.send_keys(i)
+		time.sleep(0.02)
 
-	while True:
-		if  not next_page:
-			break
-		page_num+=1
-		# 点击翻页
-		if OneHandle_UseNum > OneHandle_MaxNum:
-			driver.execute_script("window.open('')")
-			time.sleep(1)
-			close_handle(driver)
-		driver.execute_script(next_page_click_js)
-		OneHandle_UseNum += 1
-		time.sleep(3)
-		print('点击页码',page_num)
+	ele_pwd = WebDriverWait(driver, 20).until(
+		EC.presence_of_element_located((By.ID, "password"))
+	)
 
-		# 判断翻页是否加载完
+	ele_pwd.clear()
+	ele_pwd.click()
+	for i in pwd:
+		ele_pwd.send_keys(i)
+		time.sleep(0.02)
+
+	# 点击登录
+	ele_login = WebDriverWait(driver, 20).until(
+		EC.presence_of_element_located((By.ID, "btn-submit"))
+	)
+	ele_login.click()
+
+	name = WebDriverWait(driver, 20).until(
+		EC.presence_of_element_located((By.CLASS_NAME, "hidden-xs"))
+	)
+	if name:
+		print('login success...')
+
+
+# 获取源码
+def get_html(url):
+	global OneHandle_UseNum
+	if OneHandle_UseNum > OneHandle_MaxNum:
+		driver.execute_script("window.open('')")
+		time.sleep(1)
+		close_handle(driver)
+	driver.get(url)
+	OneHandle_UseNum += 1
+	time.sleep(2)
+	try:
+		WebDriverWait(driver,10,0.5).until(EC.presence_of_element_located((By.ID, "example2")))
+	except Exception as e:
+		traceback.print_exc()
+	else:
+		html = driver.page_source
+		return html
+
+
+def parse_html(html):
+	texts = []
+	next_page = None
+	if html and 'AdminLTE' in html:
 		try:
-			while 1:
-				element = WebDriverWait(driver, 900).until(EC.visibility_of_element_located((By.XPATH, '//*[@id="mainsrp-pager"]/div/div/div/ul/li[@class="item active"]/span')))
-				print(element.text)
-				if str(page_num) in element.text:
-					break
-				else:
-					break
+			doc = pq(html)
+			tr_list = doc('tbody tr').items()
 		except Exception as e:
-			traceback.print_exc()
-			f.write(driver.page_source)
-			return
-		print('当前页码',element.text)
+			print('未提取到信息', e)
+		else:
+			for tr in tr_list:
+				hang = []
+				tds = tr('td').items()
+				for td in tds:
+					text = td.text()
+					hang.append(text)
+				texts.append(hang)
+		if '下一页' in html:
+			page_a = doc('.pageSty a').eq(0)
+			next_page = page_a.attr('href')
+	return texts,next_page
 
-		driver.execute_script(js_xiala)
-		time.sleep(15)
-		html, now_url = driver.page_source, driver.current_url
-		rows_all,next_page = parse_html(html,now_url)
-		print(f'当前页文本:{next_page}')
-		save(rows_all,now_url)
+
+def save_data(texts):
+	for hang in texts:
+		str_text = '\t'.join(hang)
+		if str_text:
+			f.write('{0}\n'.format(str_text))
+		f.flush()
 
 
+def run(url):
+	html = get_html(url)
+	texts,next_link = parse_html(html)
+	save_data(texts)
+	while 1:
+		if next_link:
+			next_link = 'https://cms.5i5j.com' + next_link
+			print('next:',next_link)
+			html = get_html(next_link)
+			tie_links,next_link = parse_html(html)
+			save_data(tie_links)
+			time.sleep(2)
+		else:
+			break
 
-if __name__ == "__main__":
+
+if __name__ == '__main__':
 	OneHandle_UseNum,OneHandle_MaxNum = 1,1 # 计数1个handle打开网页次数(防止浏览器崩溃)
-	ChromePath = r"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe"
+	ChromePath = r"C:\Program Files\Google\Chrome\Application\chrome.exe"
 	ChromeDriver_path = 'D:/install/pyhon36/chromedriver.exe'
-	UA = 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.135 Safari/537.36'
-	lock = threading.Lock()
-	q = read_excel('kwd-vrrw.net.xlsx')
-	CsvResFile = 'kwd-vrrw.net_serpurl.csv'
-	# 首页url
-	IndexUrl = '' 
-	next_page_click_js = 'document.querySelector("#mainsrp-pager > div > div > div > ul > li.item.next > a").click()'
-	js_xiala = 'window.scrollBy(0,document.body.scrollHeight)'
-	driver = get_driver(chrome_path,chromedriver_path,ua)
-	f = open('res.txt','w',encoding='utf-8')
-	main()
+	driver = get_driver(ChromePath,ChromeDriver_path)
+	login_cms(user='xxx',pwd='yyyy')
+	loop_q = pd.read_excel('config.xlsx').drop_duplicates(subset=['城市']).iterrows()
+
+	for index,row in  loop_q:
+		city,cid = row['城市'],row['城市ID']
+		if cid in [1, 7, 9, 19]:
+			continue
+		url = f'https://cms.5i5j.com/export/exportcommunityindex?cityID={cid}&qyid=0&sqid=0&type=1&housenum=1'
+		print(city,cid)
+		f = open(f'./{city}-二手.txt','w',encoding='utf-8')
+		run(url)
+		f.flush()
+
+		url = f'https://cms.5i5j.com/export/exportcommunityindex?cityID={cid}&qyid=0&sqid=0&type=2&housenum=1'
+		print(city, cid)
+		f = open(f'./{city}-租房.txt', 'w', encoding='utf-8')
+		run(url)
+		f.close()
