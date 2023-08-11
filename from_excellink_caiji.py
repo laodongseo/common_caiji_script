@@ -46,12 +46,12 @@ class Spider_Content(threading.Thread):
 		doc= pq(str(html))
 		div_obj = doc('div.content')
 		img_objs = div_obj('img').items()
-		imgs_list = [img.attr('src') for img in img_objs if img.attr('src)]
+		imgs_list = [img.attr('src') for img in img_objs if img.attr('src')]
 		imgs = '#'.join(imgs_list)
 
 		div_html = div_obj.html()
 		div_html = re.sub('\n|&#13;','',div_html)
-		div_html = re.sub(r'<p>	<br /></p>|<p>	<br/></p>|<p>	<br></p>|<p>	<br ></p>','',div_html)
+		div_html = re.sub(r'<p> <br /></p>|<p>  <br/></p>|<p>   <br></p>|<p>    <br ></p>','',div_html)
 		no_str = '<!--<div class="arcbodyad"><a href="http://www.xiuzhanwang.com/" ><img src="/style/arcad.jpg" /></a></div>-->'
 		div_html = re.sub(no_str,'',div_html)
 		article = re.sub('<p>','<p>　　',div_html).strip()
