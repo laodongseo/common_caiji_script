@@ -95,7 +95,7 @@ def func_img(directorys):
 				thefile = os.path.join(dirnow,sonfile)
 				dict_img = {
 						'input_image_path':thefile,
-						'output_image_path':os.path.join(newdir,os.path.basename(sonfile)),
+						'output_image_path':os.path.join(newdir,sonfile),
 						'watermark_image_path':logo_img,
 						'position':(0.03,0.05)
 						}
